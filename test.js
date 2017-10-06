@@ -6,7 +6,7 @@ rng.seed(1);
 
 /*
     l0[0]->   0     0
-0   
+0
     l0[1]->   0     0    0
 0
     l0[2]->   0     0
@@ -57,31 +57,29 @@ var network = {
 }
 
 const think = (network, inputData) => {
+	var output = new Array(network.layer.length).fill(0)
 	var input = inputData;
 	for(let l = 0; l < network.layer.length; l++){
-		let nxtInput = new Array(network.neuronsPerLayer[l]).fill(0);
+		let nextInput = new Array(network.neuronsPerLayer[l]).fill(0);
 
-		for(let i = 0; i < nxtInput.length; i++){
+		for(let i = 0; i < nextInput.length; i++){
 			var sum = 0;
 			for(let x = 0; x < input.length; x++){
 				sum += input[x]  * network.layer[l][((x * network.neuronsPerLayer[l])+i)];
 			}
-			nxtInput[i] = math.sigmoid(sum);
+			nextInput[i] = math.sigmoid(sum);
 		}
-		input = nxtInput;
+		input = nextInput;
+		output[l] = input;
 	}
-	return input;
+	return output;
 }
 
-var input;
-for(var iteration = 0; iteration < 10; iteration++){
-	
+for(var iteration = 0; iteration < 100000; iteration++){
+
 	var ret = think(network, inputData);
 
-	var error = outputExpected - ret;
-	var delta = error * math.sigmoidDerivative(ret);
 
-	
-	console.log(delta);
-	
 }
+
+console.log(ret)
